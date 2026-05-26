@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Disease Burden Monitoring</title>  
+	 
+    <link rel="manifest" href="./manifest.webapp">
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/toastify.min.css" rel="stylesheet">
+</head>
+<body>
+    <header id="header" class="header custom-header py-2 bg-primary"></header>
+    <nav id="nav" class="py-1 bg-light border-bottom nav"></nav>    
+    <main>
+        <div class="home">
+            <div class="container">
+                <div class="row pt-4">
+                   <div class="col-lg-12" style="border-bottom:2px solid #efefef">
+                     <h5>Disease Burden (OPD Morbidity)</h5>
+                   </div>
+                 </div>
+                 
+                <div class="row py-4">
+                    <div class="col-lg-4">
+                        <div class="card selection-box">
+                            <div class="card-body">
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">OU</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select"
+                                            aria-label="Floating label select example" name="organisationUnit" id="organisationUnit"></select>
+                                    </div>
+                                </div>
+                                                                
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">Period</label>
+                                    <div class="col-sm-9">    
+                                        <select class="form-select" aria-label="Floating label select example" name="period" id="period">
+                      										<option value="THIS_MONTH">This Month</option>
+                      										<option value="LAST_MONTH">Last Month</option>
+                      										<option value="LAST_3_MONTHS">Last 3 Months</option>
+                      										<option value="LAST_6_MONTHS">Last 6 Months</option>
+                      										<option value="LAST_12_MONTHS">Last 12 Months</option>
+                      										<option value="MONTHS_THIS_YEAR">Months This Year</option>
+                      										<option value="THIS_FINANCIAL_YEAR">This Fiscal Year</option>
+                      										<option value="LAST_FINANCIAL_YEAR">Last Fiscal Year</option>
+                      										<option value="LAST_5_FINANCIAL_YEARS">Last 5 Fiscal Years</option>
+                      									</select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">&nbsp;</label>
+                                    <div class="col-sm-9">    
+                                        <button class="btn btn-info text-white" id="apply" style="width:100%">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8" id="indicator-div">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <div class="loading-popup" id="loading-popup" style="display:none;">
+        <div class="loader-content-holder">
+            <div class="loader-circulara"></div>
+            <div class="loader-mask"></div>
+            <div class="loader-mask"></div>
+        </div>
+    </div>
+  
+	<script src="./vendor/popper.min.js"></script>
+	<script src="./vendor/bootstrap.min.js"></script>
+	<script src="./vendor/jquery-v1.js"></script>
+	<script src="./vendor/toastify.js"></script>
+	<script src="./vendor/jquery-block-ui.js"></script>
+	<script src="./lib/config.js"></script>
+	<script src="./lib/nav-script.js"></script>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+	<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+	<link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){        
+			var base = "https://hmis.gov.np/"; //hmisrest/dhpbridge.php?action=";
+			var basePlain = "https://hmis.gov.np/"; //hmisrest/dhpbridge.php?type=plain&livedata=";
+			var dataElements = [];
+			var dataElementNames = [];
+
+			$.getJSON("/hmis/api/me.json?fields=id,name,displayName,organisationUnits[id,name]", function(userOus){
+				$.each(userOus.organisationUnits, function(i, ou){
+					var ouOptions = "<option value='"+ou.id+"'>"+ou.name+"</option>";
+					$("#organisationUnit").append(ouOptions);
+				});
+			});
+
+			$("#indicator-div").html("<h5>&laquo; Select options and click apply button</h5>");
+			
+			$(".optionSelect").change(function(){
+				var id = $(this).attr("id");
+				console.log(id);
+				var program = $("#program").val();
+				var url = "";
+				
+				// Get the data elements by program
+				var url = "hmis/api/dataElementGroups/"+program+".json?fields=dataElements[id,name]";
+				$.getJSON(base+url, function(result){
+					dataElements = [];
+					dataElementNames = [];
+					$.each(result.dataElements, function(i, de){
+						dataElements.push(de.id);
+						dataElementNames.push(de.id+"_"+de.name);
+					});
+
+					if(id == "program"){
+						var optionHtml = "";
+						$.each(dataElementNames, function(i, de){
+							optionHtml += "<option value='"+de.split("_")[0]+"' title='"+de.split("_")[1]+"'>"+de.split("_")[1]+"</option>";
+						});
+						$("#dataItems2").html(optionHtml);
+					}
+					
+					if($("#type").val() != "monitoring"){
+						$("#dataElementList").hide();
+					}else{
+						$("#dataElementList").show();
+					}
+
+				});
+			});
+			
+			$("#apply").click(function(){
+				$("#indicator-div").show().html("Loading...");
+				var period = $("#period").val();
+				var ou = $("#organisationUnit").val();
+				loadDiseaseBurdenTable(period,ou);
+			});
+			
+			function loadDiseaseBurdenTable(period,ou){
+				var dataUrl = "hmis/api/analytics.html+css?dimension=pe:"+period+"&dimension=dx:gCBjGGyu3Ob;QrRDFVy1Mjy;hpZ3dxdi8ec;HIS1nrVKXig;bexWnaEedW6;AhFweT7BqD9;mFJzub2Qp4X;N3MRYiUHzil;iURsh4W0Wxp;B5cvXBhXIgG;UcD9xoD0pHx;JpeQ4lNIiQb;d6rbLkuwYOX;HtTcLcPa76T;q8avBkQYnRz;et9kurthKJ4;n0shLXzsRei;PuUh7b5KUMg;gZf4PtuvTuB;HLPy8f80TG9;pGIog18uNHE;zk7V0m3RA7A;qSCo6gFpbA7;GeJACUuNCRP;MkJoAC3k84L;KRfpvHKnT8n;zN880cooTgl;Tc7OOHf9AnE;iNrqjFueJy1;dzEJovRUDc7;f14blP528FG;P4Q4WLZE5Uw;F1uuffMUyFH;cunBHt0wvUr;wwNnQiK9BL5;ndIndgtn4VV;bLwEmxj2RiC;GG6K9THTEw4;tNijzaDiPQq;kRcki0HPrzK;KVMVoWU58Kh;kII60figzgN;YUtWzAMSciZ;HxrrbsAqyeK;gJSwP9t4uVU;iNbL2YKjJt2;a4UjEBXaRAI;rh0J7pvRf7l;SFvtAwxOQzC;sKqfojmFULI;hhF8unbGDvH;RpYKV3jN4eI;mrQlLZbA6wB;lnn6QJPjLq5;EKSttMk1htc;iHtPpjk8dlR;ItL1KGvUFOC;pBfeHDJGUkc;kLzqhClFOUj;ZS5BWPoUc3V;Mz2N95C2GBd;V6jeKfAPnko;PvspE7rlkWK;NOYxO4z4lEY;bWTc0CtkExj;aeNEz2w7vUt;nGRapIBn04F;CAgq78eCGoT;JNDXvvL6e73;qrqs5BcXz4K;S4wji3QBoDj;qtjVLLOPJMq;wYzKSWInjSq;G8wYJTMKN0U;CFfXxPrIx8E;sO9oFKB9IAJ;zcqze4wzYJf;PABYQLhP6kF;VBrz7cTB79f;rHbb3KBlxBU;wmZ2OGp6ukm;NNlu3dspuAb;goDe1kKhJGF;CDE0GWEcSai;LFBNWB6AEAS;r3sO6KWErru;QXFsxDNzIa3;YtPBGWCccw7;hlijidCZeXC;EH7DUl0MrEX;PeTGehwYB0s;STQAKvx4hrd;AfuEmTogPN2;LgjEP3jIXsd;F9nektGalvQ;OD3nX0vpeRk;uuMnXAm0kdm;lm5yM11ZfpT;SdnBnsRltSh;ZK7kbGKuFhH;OqXKbJoicMI;YCXYzdxUeum;jdsiabr6R8B;INV87zUyfus;NM4bzwrsgs0;iiJsrZe0bNk;QxEgmIN7OQM;A6x6SS5Dgds;so2s568hmR9;OJRkVtEJZJA;WEEGs3oAxHz;Wtjpt7S9YQG;y0eNCU4p6nf;ba2N6S0Nqdb;asmWrHpopvG;fi0vtzIViQE;G0FIKc60DcJ;DEtuUddCtlE;ZhUGMCZfdWb;Y5tTcY8S6tG;sOXBvbQfg3k;ctGjkbCRtZn;e37wBcnOczg;Lxyk9qE4YVm;NukRpHU2mcF;zWK9OO0pMaM;pHrDUquZIYm;QDaBpwjmfws;XBZPrqWn6OG;zcypZ3frGDB;gCLElGi3gze;fZsSPCGs3d9;LZYfptKIqkh;cISG3BoGZTm;td2iBmsLero;y3glz39HVvQ;iVcBPvC8Dm4;FJ0pdVWlBbG;w5mNn2EBUmg;LAP6lgcrJi5;te3iSwrdWO7;iZDCnd0VgWy;LAwTvVrfnOB;gwhVCfaS9UN;ZZsL7yaqg4L;cSBNopxh2ZP;ZJPpYiYwPeW;CSRB2H5GLDZ;cI801zaVGau;ZrwTzFTdZhz;BpxwodMjTM4;QQSZDRTD294;EJOh3U60jKx;qkAsR3sHGWM;cVIqiRvVHVE;Y3S9491u1gd;BQhbt7KIEPW;sMRPKqciSdG;xtYZSzBt4j8;Ezc8lbdvcW6;GbSRNVeeY9r;MRSR1vwB7DR;o2Jx5MaLlex;CminYXY6RpV;ek34FewqNAf;a506kRKpXFX;iIHlesXptP0;yFJdnwOrHXf;voyeqQ4VHCX;WTmwO75ijQ0;OJUFnZllsLL;glyCwpl4XX3;p298JZkz6Ta;b1YXlOITj25;SzcyHRm0seg;KBoL28KAp3v;dHT1BRQHShX;Myk6XIoYftg;pLdnHZ6QHyu;jjYff5pdoVS;LPL3KuAFTFb;tnm6bH7SuJ2;mvm8Z3wTFmT;RdpEs3jOLCH;KRiv3u1UVbQ;eVXV442upyV;ZcI2ieytA1s;ldgv9ph2mBj;bQBY0ZM3U1Q;fCv76CsoGVC;b0flJFAByeR;ru2303Sy7nA;oVnNnGHesch;s4WLJ0dumzx;uPijgtgd0jA;A7ZUMi18b2C;BJpAbmeRUVm;wxnuAwt1Hqm;B8CqXFlCBr5;HuGvgg2pOA2;lNtBCvtTxhy;RVhyQYMBoTs;foBSqZVlQqZ;KaHd1xBHBfO;PYQPAx2s3On;cWN72D91wWx;Bj8m5N2pTT4;FvUsjP01G6w;KVZxc94qbg0;sm8t8cvkX0u;g8lF7Um9jQA;wzTTSKR3JgH;KkV2jvCCISU;Tcq1b4uRLTl;rorMnL90qUo;Ls6DBELhucD;CHDJ7eiK26X;qA53nDCEOgt;XeLKZHIMpSb;YZoJchLc66y;wpE1UaVVdRB;HEHjpjSkufl;bPqpAal7GQR;Dj1nN42wiMd;pGgj6Uir7IQ;WVh4R6WYimN;HgbiECMw5b0;qJ4iFmazTlj;XsxNnzlF1BX;pmLQfrfxRGP;Gbnq9hQ8Cdv;m09EZ409OyU;AItZIQeritY;VY580eVaGXw;doJ6CNvMbmw;bp53MgxccqQ;l09HErr6ggw;Qvvn1g4XfZ1;oh9zomy0bdm;EKavdicUQaW;nDWUFmrIPCA;l2WtbkagDEQ;SQNwhuIWZnE;PJklaKiPahr;l9K5FDX0TzP;jdMSjAAFrsr;AR2PUdMddYz;tYjWPArxgfm;DHYZJyfhw1s;kdWPXAMCv2N;tKnSyC5j6yR;x6rCNsx0k94;wOcRtQidQ51;daRv0ld07Hm;klPzarmP4i5;CMTTYvszId4;EELNfz1YCZv;GyGRGTZsRHN;jXZokvGicd1;IriSNYAZb14;OOO9AMFyOuM;nwdHjVGNJXP;FZZdZbgcA47;xoQX7YuYQ8d;PGX59e9bSPx;dFlqpKxwTYh;bEaNbyFhWqE;zCnvG70EbAa;E80SAeiK4KF;eimjIL0RFb8;G2SkThUYe5w;ZCcVuwqAfaG;z1O4M2enpI3;INDKIQBLb3i;e8gE5FvXVnB;C1dYWXuPeBo;uV5LwN8OzCy;qrTjnhUQ195;Bq8dxhxEmcI;IqwX6ARGCF7;axzMcDrcIfU;VAqYKbRvrHe;IihXJC3GzYF;Xfr7s6N5ILP;DuhReYAWpjc;DjYPzxgHx9v;ZfcANR0riP1;tS2cUtWNXpI;lvrJamUsDfR;rwQjknPpoey;mq1lHdw5EZ2;FAaK12zZX3M;ZfULTbeDgRF;tdl64qm6OIo;JNQxHWNvhcf;ZhcOrFM8ho1;txuV68xtrYc;FN5uLuYjGmq;Xzw4N8KPWQS;aoQoJU7AQ9O;K1Vggqh7EZL;S6sNGnudQxv&filter=ou:"+ou+"&displayProperty=SHORTNAME&outputIdScheme=NAME&tableLayout=true&columns=pe&rows=dx";
+
+				$("#indicator-div").load(base+dataUrl,function(data){
+					applyDataTable();	
+				});
+			}
+
+			function applyDataTable(){
+				$('.listTable').DataTable({
+					"pageLength": 25,
+					"ordering": true,
+					"columnDefs": [
+						{targets:"_all", render:$.fn.dataTable.render.number('', '.', 0, '')}
+					]
+				});
+				
+				$("#loading-popup").hide();
+			}
+		});
+	</script>
+</body>
+</html>

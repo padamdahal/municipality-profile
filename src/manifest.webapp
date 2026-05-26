@@ -1,0 +1,23 @@
+{
+    "version": "1.0",
+    "name": "Municipality Profile",
+    "description": "Municipality Profile",
+    "launch_path": "/index.html",
+    "appType": "APP",
+    "icons": {
+        "16": "img/icon.png",
+        "48": "img/icon.png",
+        "128": "img/icon.png"
+    },
+    "developer": {
+        "name": "PD",
+        "url": ""
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": "*",
+            "namespace": "digitalhealthprofile"
+        }
+    }
+}

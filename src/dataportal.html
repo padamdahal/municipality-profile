@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HMIS Open Data Portal</title>
+	
+    <link rel="manifest" href="./manifest.webapp">
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/toastify.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header id="headers" class="headersssss custom-header py-2 bg-primary">
+    <div class="container">
+    <div class="row bg-gray">
+        <div class="col-lg-9">
+            <div class="d-flex align-items-center">
+                <a href="#" class="text-decoration-none fw-bold text-white"><img src="img/icon.png" style="background:#fff;border-radius:5px;width:40px;"/> HMIS Open Data Portal</a>
+            </div>
+        </div>
+    </div>
+</div>     
+    </header>    
+    <!--nav class="py-1 bg-light border-bottom nav" id="nav">       
+    </nav-->   
+    <main>
+        <div class="home">
+            <div class="container">
+                 <!--div class="row pt-4">
+                   <div class="col-lg-12" style="border-bottom:2px solid #efefef">
+                     <h5>Data Quality Monitoring</h5>
+                   </div>
+                 </div-->
+                <div class="row py-4">
+                    <div class="col-lg-4">
+                        <div class="card selection-box">
+                            <div class="card-body">
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">OU</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select"
+                                            aria-label="Floating label select example" name="organisationUnit" id="organisationUnit"></select>
+                                    </div>
+                                </div>
+                                <!--div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">Type</label>
+                                    <div class="col-sm-9">                                   
+                                        <select class="form-select" aria-label="Floating label select example" name="type" id="type">
+                      										<option value="verification">Verification</option>
+                      										<option value="monitoring">Monitoring</option>
+                      										<option value="reporting">Reporting</option>
+                      									</select>
+                                    </div>
+                                </div-->
+                                
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">Period (FY)</label>
+                                    <div class="col-sm-9">    
+                                        <select class="form-select" aria-label="Floating label select example" name="period" id="period">
+                      										<option value="MONTHS_THIS_YEAR">2076/77</option>
+                      										<option value="THIS_FINANCIAL_YEAR">2077/78</option>
+                      										<option value="LAST_FINANCIAL_YEAR">2078/79</option>
+                      									</select>
+                                    </div>
+                                </div>
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">Program</label>
+                                    <div class="col-sm-9">    
+                                        <select class="form-select" aria-label="Floating label select example" name="program" id="program"></select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-1 dataItems">
+                                    <label for="input" class="col-sm-3 col-form-label">Data</label>
+                                    <div class="col-sm-9">    
+                                        <select class="form-select" aria-label="Floating label select example" name="dataItems2" id="dataItems2">
+                      										<option value=''>Select Data Element</option>
+                      									</select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">&nbsp;</label>
+                                    <div class="col-sm-9">    
+                                        <button class="btn btn-info text-white" id="apply" style="width:100%">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" id="indicator-div">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="loading-popup" id="loading-popup" style="display:none;">
+        <div class="loader-content-holder">
+            <div class="loader-circulara">aaa</div>
+            <div class="loader-mask"></div>
+            <div class="loader-mask"></div>
+        </div>
+    </div>
+    
+	
+	<script src="./vendor/popper.min.js"></script>
+	<script src="./vendor/bootstrap.min.js"></script>
+	<script src="./vendor/jquery-v1.js"></script>
+	<script src="./vendor/toastify.js"></script>
+	<script src="./vendor/jquery-block-ui.js"></script>
+	<script src="./lib/config.js"></script>
+	<script src="./lib/nav-script.js"></script>
+	
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+  	<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">  
+  	<link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet">
+  	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  	<style>
+  		.select2-container{padding:0 !important}
+  	</style>
+	</style>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+      $("#nav").load('./menu.html');
+      $('#dataItems2').select2();
+      $(".dataItems").hide();
+			var base = "https://hmis.gov.np/"; //hmisrest/dhpbridge.php?action=";
+			var basePlain = "https://hmis.gov.np/"; //hmisrest/dhpbridge.php?type=plain&action=";
+			var dataElements = [];
+			var dataElementNames = [];
+
+			$.getJSON("/hmis/api/me.json?fields=id,name,displayName,organisationUnits[id,name]", function(userOus){
+				$.each(userOus.organisationUnits, function(i, ou){
+					var ouOptions = "<option value='"+ou.id+"'>"+ou.name+"</option>";
+					$("#organisationUnit").append(ouOptions);
+				});
+			});
+
+			$.getJSON(base+"hmis/api/dataElementGroups.json?paging=false", function(deGroups){
+				$.each(deGroups.dataElementGroups, function(i, deGroup){
+					var deGroupOption = "<option value='"+deGroup.id+"'>"+deGroup.displayName+"</option>";
+					$("#program").append(deGroupOption);
+				});
+			});
+
+			if($("#type").val() != "monitoring"){
+					$(".dataItems").hide();
+			}else{
+				$(".dataItems").show();
+			}
+
+			$("#indicator-div").html("<h5>&laquo; Select options and click apply button</h5>");
+			
+			$(".form-select").change(function(){
+				var id = $(this).attr("id");
+
+				var program = $("#program").val();
+
+				// Get the data elements by program
+				var url = "hmis/api/dataElementGroups/"+program+".json?fields=dataElements[id,name]";
+				$.getJSON(base+url, function(result){
+					dataElements = [];
+					dataElementNames = [];
+					$.each(result.dataElements, function(i, de){
+						dataElements.push(de.id);
+						dataElementNames.push(de.id+"_"+de.name);
+					});
+
+					if(id == "program"){
+						var optionHtml = "";
+						$.each(dataElementNames, function(i, de){
+							optionHtml += "<option value='"+de.split("_")[0]+"' title='"+de.split("_")[1]+"'>"+de.split("_")[1]+"</option>";
+						});
+						$("#dataItems2").html(optionHtml);
+					}
+					
+					if($("#type").val() != "monitoring"){
+						$(".dataItems").hide();
+					}else{
+						$(".dataItems").show();
+					}
+
+				});
+			});
+			
+			$("#apply").click(function(){
+				$("#indicator-div").show().html("Loading...");
+				var reportType = $("#type").val();
+				var period = $("#period").val();
+				var program = $("#program").val();
+				var ou = $("#organisationUnit").val();
+        loadDataVerificationTable(period,ou);
+        
+			});
+			
+			function loadDataVerificationTable(period,ou){
+				var dataUrl = "hmis/api/analytics.html+css?filter=pe:"+period+"&dimension=dx:";
+				dataUrl += dataElements.join(";");
+				dataUrl += "&dimension=ou:LEVEL-1;LEVEL-3;LEVEL-4;LEVEL-2;"+ou+"&displayProperty=NAME&tableLayout=true&columns=dx&rows=ou&skipRounding=false";
+
+				$("#indicator-div").load(base+dataUrl,function(data){
+					applyDataTable();	
+				});
+			}
+
+			function applyDataTable(){
+				$('.listTable').DataTable({
+					"pageLength": 25,
+					"ordering": true,
+					"columnDefs": [
+						{targets:"_all", render:$.fn.dataTable.render.number('', '.', 0, '')}
+					]
+				});
+				
+				$("#loading-popup").hide();
+			}
+		});
+	</script>
+</body>
+</html>

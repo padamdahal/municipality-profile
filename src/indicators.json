@@ -1,0 +1,35 @@
+{ "indicatorGroups" : 
+[
+  {
+    "id" : "haj3fadxJzN",
+    "displayName" : "Immunization",
+		"defaultIndicator" : "AFlVz6gyQBV"
+  },
+  {
+    "id" : "gaoQB9101M5",
+    "displayName" : "Maternal and Newborn Health",
+		"defaultIndicator" : "nFRulByeHnY"
+  },
+  {
+    "id" : "fWPOclqFtB5",
+    "displayName" : "Family Planning",
+		"defaultIndicator" : "BtdY2HCA7Ff"
+  },
+  {
+    "id" : "TK2yrPds06z",
+    "displayName" : "Nutrition",
+		"defaultIndicator" : "GgSP8slMkEs"
+  },
+  {
+    "id" : "KkljKNukRqA",
+    "displayName" : "IMNCI",
+		"defaultIndicator" : "xOPwniI7CZ9"
+  },
+  {
+    "id" : "kfRPfIHNCuZ",
+    "displayName" : "Curative Services",
+		"defaultIndicator" : "PIFA9BLMpXu"
+  }
+  
+]
+}

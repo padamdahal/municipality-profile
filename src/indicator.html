@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DHIS Indicator Selection</title>
+
+    <link rel="manifest" href="./manifest.webapp">
+    <link href="./css/bootstrap.css" rel="stylesheet">
+    <link href="./css/toastify.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+
+    <script src="./vendor/popper.min.js"></script>
+    <script src="./vendor/bootstrap.min.js"></script>
+    <script src="./vendor/jquery-v1.js"></script>
+    <script src="./vendor/toastify.js"></script>
+    <script src="./vendor/jquery-block-ui.js"></script>
+
+    <script src="./lib/config.js"></script>
+    <script src="./lib/nav-script.js"></script>
+    <script src="./lib/data.js"></script>
+    <script src="./lib/app.js"></script>
+</head>
+<body>
+    <header class="header custom-header py-2">
+    </header>
+    <nav class="py-1 bg-light border-bottom nav">
+    </nav>
+    <main>
+        <div class="home">
+            <div class="container">
+                <div class="row py-4">
+                    <div class="col-lg-4">
+                        <div class="card selection-box">
+                            <div class="card-body">
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">Organization Unit</label>
+                                    <div class="col-sm-9">
+                                        <select id="organization-unit-select" class="form-select" id="floatingSelect"
+                                            aria-label="Floating label select example">
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-1 ">
+                                    <label for="input" class="col-sm-3 col-form-label">Program</label>
+                                    <div class="col-sm-9">
+                                        <select id="program-select" class="form-select" id="floatingSelect"
+                                            aria-label="Floating label select example">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" id="indicator-div">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="loading-popup" id="loading-popup" style="display:none;">
+        <div class="loader-content-holder">
+            <div class="loader-circular">
+            </div>
+            <div class="loader-mask">
+            </div>
+            <div class="loader-mask">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

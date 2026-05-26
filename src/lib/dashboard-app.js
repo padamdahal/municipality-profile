@@ -20,7 +20,10 @@ $(function() {
         });
     });    
     
-    function init(orgUnit, fiscalYear){        
+    function init(orgUnit, fiscalYear){
+        
+        loadCensusDashboard('src', 'https://censusnepal.cbs.gov.np/results/population?province=7&district=75&municipality=1');
+        
         $(document).find('.loaded').each(function(){
             $(this).removeClass('loaded');
         });
@@ -39,12 +42,29 @@ $(function() {
         dataRepository.setDiseaseChart(orgUnit, fiscalYear);  
         dataRepository.setWardWiseHealthFacilityChart(orgUnit, fiscalYear);  
     }
-    
+
+    function loadCensusDashboard(url) {
+      const iframe = document.getElementById('censusdata');
+      const loader = document.getElementById('loadingcensusdata');
+
+      // 1. Show the loader
+      loader.style.display = 'flex';
+      // 2. Set up the trigger to hide it when finished
+      iframe.onload = function() {
+        loader.style.display = 'none';
+      };
+      // 3. Change the source to trigger the load
+      iframe.src = url;
+    }
+
     $('#organization-unit-select').change(function(){
         var orgUnit = $('#organization-unit-select').val();
         var fiscalYear = $('#fiscal-year-select').val();
         $('#municipality-name').text($('#organization-unit-select option:selected').text());
         init(orgUnit, fiscalYear);
+        loadCensusDashboard('https://censusnepal.cbs.gov.np/results/population?province=7&district=75&municipality=2');
+        
+        //$('#censusdata').attr('src', 'https://censusnepal.cbs.gov.np/results/population?province=7&district=75&municipality=2');
     })
     
     $('#fiscal-year-select').change(function(){

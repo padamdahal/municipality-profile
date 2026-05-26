@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DHIS Dashboard</title>
+    <title>Municipality Profile</title>
 
     <link rel="manifest" href="./manifest.webapp">
     <link rel="stylesheet" href="./css/leaflet.css" />
@@ -55,7 +55,7 @@
         <div class="main-content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-8 ">
+                    <!--div class="col-lg-8 ">
                         <div class="box shadow bg-white mb-3 ">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i
                                     class="bi-people"></i> Information </div>
@@ -73,10 +73,10 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
 
                     <div class="col-lg-4">
-                        <div class="box shadow bg-white mb-3">
+                        <!--div class="box shadow bg-white mb-3">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i
                                     class="bi-people"></i> Key Demographics </div>
                             <div class="box-body">
@@ -84,7 +84,7 @@
                                     <div class="clearfix"></div>
                                 </ul>
                             </div>
-                        </div>
+                        </div-->
 
                         <div class="box shadow bg-white mb-3">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i
@@ -98,20 +98,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 mb-3">
+                    <div class="col-lg-12">
+                        <div id="loadingcensusdata" class="loader">Loading Census Data...</div>
+                        <iframe id="censusdata" src="https://censusnepal.cbs.gov.np/results/population?province=7&district=75&municipality=1" width="100%" height="400px"></iframe>
+                    </div>
+                    <!--div class="col-lg-6 mb-3">
                         <div class="box shadow bg-white">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i
                                     class="bi-people"></i> Population Distribution by Caste
-                                <!-- <span class="fs-7 fw-normal">(Male /
-                                    Female)</span>  -->
                             </div>
                             <div class="box-body">
                                 <label></label>
                                 <div id="castewise"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
+                    </div-->
+                    <!--div class="col-lg-6">
                         <div class="box shadow bg-white mb-3">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6">
                                 <i class="bi-virus"></i> Active Health Insures
@@ -121,10 +123,10 @@
                                 <div id="insures"></div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                 </div>
                 <div class="row">
-                    <div class="col-lg-12">
+                    <!--div class="col-lg-12">
                         <div class="box shadow bg-white mb-3">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i
                                     class="bi-people"></i> Population Distribution by Age and Sex </div>
@@ -132,21 +134,19 @@
                                 <div id="populationByGender"></div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <!--div class="col">
                         <div class="box shadow bg-white mb-3">
                             <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i
                                     class="bi-people"></i> Population Distribution by Ward
-                                <!-- <span class="fs-7 fw-normal">(Male /
-                                    Female)</span>  -->
                             </div>
                             <div class="box-body">
                                 <div id="chartgenderward"></div>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                 </div>               
                 <div class="box shadow bg-white mb-3">
                     <div class="h-header p-2 border-bottom text-custom-primary fw-bold fs-6"><i class="bi-virus"></i>

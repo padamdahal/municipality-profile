@@ -956,7 +956,7 @@ class DataRepository {
     async getIndicatorTrendlineProgramIndicatorData(orgUnit, indicatorString){
         var endpoint = 'api/analytics.json?dimension=dx:' + indicatorString + '&dimension=pe:THIS_FINANCIAL_YEAR;LAST_5_FINANCIAL_YEARS&filter=ou:' 
         + orgUnit + '&displayProperty=NAME&outputIdScheme=UID';
-        var url = this.liveUrl + encodeURIComponent(endpoint);
+        var url = this.liveUrl + endpoint; //encodeURIComponent(endpoint);
         // var url = "http://localhost/dip/api/indicatorData.php"
 
         return await ajaxResponse(url);
@@ -1008,6 +1008,7 @@ class DataRepository {
                         programIndicatorsResponse.indicators.forEach(function (data) {
                             indicatorsString += data.id + ';';
                         });
+                        console.log(indicatorsString);
 
                         obj.getIndicatorTrendlineProgramIndicatorData(orgUnit, indicatorsString).then( function(indicatorMonitoringResponse){
                             var indexOfIndicator = 0;
@@ -1268,7 +1269,6 @@ class DataRepository {
         } 
 
         var url = this.url + 'api/me.json?fields=id,name,displayName,organisationUnits[id, name]';
-        // var url = "http://localhost/dip/api/organization.php"
         var response = await ajaxResponse(url, 'GET', {}, callback);
         return response;
     }

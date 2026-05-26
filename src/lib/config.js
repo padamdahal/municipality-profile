@@ -4,4 +4,4 @@ bridgeUrl_config = 'https://hmis.gov.np/hmisrest/dhpbridge.php?action=hmisadditi
 //liveUrl_config = 'https://hmis.gov.np/hmisrest/dhpbridge.php?action=hmis/';
 liveUrl_config = 'https://hmis.gov.np/hmis/';
 bridgePlainUrl_config = 'https://hmis.gov.np/hmisrest/dhpbridge.php?type=plain&action=hmisadditional/';
-indicatorJsonPath_config = 'https://hmis.gov.np/hmis/api/apps/DHP/indicators.json';
+indicatorJsonPath_config = 'https://hmis.gov.np/hmis/api/apps/Municipality-Profile/indicators.json';
